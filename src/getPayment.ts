@@ -1,5 +1,6 @@
-import * as payments from "../src/lib/payments";
+import { constructPayments } from "../src/lib/payments";
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
+import { DocumentClient } from "./lib/dynamodb";
 
 export const handler = async (
   event: APIGatewayProxyEvent,
@@ -11,6 +12,7 @@ export const handler = async (
       body: JSON.stringify({ error: "Missing payment ID" }),
     };
   }
+  const payments = constructPayments(DocumentClient);
   const payment = await payments.getPayment(paymentId);
 
   if (payment === null) {

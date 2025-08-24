@@ -1,8 +1,9 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { buildResponse, parseInput } from "./lib/apigateway";
-import { createPayment, type Payment } from "./lib/payments";
+import { constructPayments, Payment } from "./lib/payments";
 import { availableCurrencies } from "./currencies";
 import { validate, Validators } from "./utils/requestValidation";
+import { DocumentClient } from "./lib/dynamodb";
 
 type UserSuppliedPayment = Omit<Payment, "id">;
 
@@ -33,7 +34,7 @@ export const handler = async (
   const userSuppliedPayment = parseInput(
     event.body || "{}",
   ) as UserSuppliedPayment;
-  const payment = {
+  const payment: Payment = {
     ...userSuppliedPayment,
     id: crypto.randomUUID(),
   };
@@ -45,7 +46,8 @@ export const handler = async (
     return buildResponse(422, { errors });
   }
 
-  await createPayment(payment);
+  const payments = constructPayments(DocumentClient);
+  await payments.createPayment(payment);
 
   return buildResponse(201, { result: payment.id });
 };

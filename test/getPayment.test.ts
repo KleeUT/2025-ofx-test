@@ -3,7 +3,20 @@ import { randomUUID } from "crypto";
 import { handler } from "../src/getPayment";
 import { APIGatewayProxyEvent } from "aws-lambda";
 
+const getPaymentMock = jest.fn();
+jest.mock("../src/lib/payments", () => ({
+  constructPayments: () => ({
+    getPayment: getPaymentMock,
+    listPayments: jest.fn(),
+    createPayment: jest.fn(),
+  }),
+}));
+
 describe("When the user requests the records for a specific payment", () => {
+  beforeEach(() => {
+    jest.resetAllMocks();
+  });
+
   it("Returns the payment matching their input parameter.", async () => {
     const paymentId = randomUUID();
     const mockPayment = {
@@ -11,9 +24,8 @@ describe("When the user requests the records for a specific payment", () => {
       currency: "AUD",
       amount: 2000,
     };
-    const getPaymentMock = jest
-      .spyOn(payments, "getPayment")
-      .mockResolvedValueOnce(mockPayment);
+
+    getPaymentMock.mockResolvedValueOnce(mockPayment);
 
     const result = await handler({
       pathParameters: {
@@ -27,9 +39,7 @@ describe("When the user requests the records for a specific payment", () => {
     expect(getPaymentMock).toHaveBeenCalledWith(paymentId);
   });
   it("Rejects when there is no paymentId passed in", async () => {
-    const getPaymentMock = jest
-      .spyOn(payments, "getPayment")
-      .mockRejectedValueOnce(new Error("Payment not found"));
+    getPaymentMock.mockRejectedValueOnce(new Error("Payment not found"));
 
     const result = await handler({
       pathParameters: {},
@@ -47,9 +57,7 @@ describe("When the user requests the records for a specific payment", () => {
       currency: "AUD",
       amount: 2000,
     };
-    const getPaymentMock = jest
-      .spyOn(payments, "getPayment")
-      .mockResolvedValueOnce(null);
+    getPaymentMock.mockResolvedValueOnce(null);
 
     const result = await handler({
       pathParameters: {

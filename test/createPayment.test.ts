@@ -2,11 +2,19 @@ import * as payments from "../src/lib/payments";
 import { handler } from "../src/createPayment";
 import { apiGatewayEventWithBody } from "./apiGatewayEventUtils";
 import { availableCurrencies } from "../src/currencies";
+
+const createPaymentMock = jest.fn();
+jest.mock("../src/lib/payments", () => ({
+  constructPayments: () => ({
+    getPayment: jest.fn(),
+    listPayments: jest.fn(),
+    createPayment: createPaymentMock,
+  }),
+}));
+
 describe("createPayment", () => {
   it("should create a payment successfully", async () => {
-    const paymentMock = jest
-      .spyOn(payments, "createPayment")
-      .mockResolvedValueOnce();
+    createPaymentMock.mockResolvedValueOnce({});
 
     jest
       .spyOn(crypto, "randomUUID")
@@ -18,7 +26,7 @@ describe("createPayment", () => {
         currency: "USD",
       }),
     );
-    expect(paymentMock).toHaveBeenCalledWith({
+    expect(createPaymentMock).toHaveBeenCalledWith({
       id: "0000-0000-0000-0000-0000",
       amount: 100,
       currency: "USD",
@@ -30,7 +38,7 @@ describe("createPayment", () => {
   });
   describe("validation", () => {
     beforeEach(() => {
-      jest.spyOn(payments, "createPayment").mockResolvedValueOnce();
+      createPaymentMock.mockResolvedValueOnce({});
 
       jest
         .spyOn(crypto, "randomUUID")
