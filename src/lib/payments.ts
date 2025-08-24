@@ -17,12 +17,21 @@ export function constructPayments(client: DynamoDBDocumentClient) {
     return (result.Item as Payment) || null;
   };
 
-  const listPayments = async (): Promise<Payment[]> => {
-    const result = await client.send(
-      new ScanCommand({
-        TableName: "Payments",
-      }),
-    );
+  const listPayments = async (
+    currency: string | undefined = undefined,
+  ): Promise<Payment[]> => {
+    const command = currency
+      ? new ScanCommand({
+          TableName: "Payments",
+          FilterExpression: "currency = :currency",
+          ExpressionAttributeValues: {
+            ":currency": currency,
+          },
+        })
+      : new ScanCommand({
+          TableName: "Payments",
+        });
+    const result = await client.send(command);
 
     return (result.Items as Payment[]) || [];
   };
