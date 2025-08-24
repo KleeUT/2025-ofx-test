@@ -13,6 +13,13 @@ export const handler = async (
   }
   const payment = await payments.getPayment(paymentId);
 
+  if (payment === null) {
+    return {
+      statusCode: 404,
+      body: JSON.stringify({ error: "Payment not found" }),
+    };
+  }
+
   return {
     statusCode: 200,
     body: JSON.stringify(payment),
