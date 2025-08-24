@@ -10,7 +10,9 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "cdk": "cdk",
-    "deploy": "cdk deploy --require-approval=never"
+    "deploy": "cdk deploy --require-approval=never",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "devDependencies": {
     "@types/jest": "^29.5.14",
@@ -19,6 +21,7 @@
     "aws-cdk": "2.148.0",
     "esbuild": "0.23.0",
     "jest": "29.7.0",
+    "prettier": "^3.6.2",
     "ts-jest": "^29.4.1",
     "ts-node": "10.9.2",
     "typescript": "5.5.3"
