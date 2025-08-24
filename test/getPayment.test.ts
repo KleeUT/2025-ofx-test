@@ -27,8 +27,6 @@ describe("When the user requests the records for a specific payment", () => {
     expect(getPaymentMock).toHaveBeenCalledWith(paymentId);
   });
   it("Rejects when there is no paymentId passed in", async () => {
-    const paymentId = randomUUID();
-
     const getPaymentMock = jest
       .spyOn(payments, "getPayment")
       .mockRejectedValueOnce(new Error("Payment not found"));
