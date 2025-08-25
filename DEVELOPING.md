@@ -45,3 +45,12 @@ List payments on the local server by a currency ([all currencies](src/currencies
 
 Get a payment from the local server
 `curl http://localhost:3000/payments/{payment id}`
+
+# Linting
+
+This repo is using Prettier as a code formatter and eslint for correctness checking.
+
+## Pre-commit hook
+
+To run linting on every commit you need to run `npm run prepare` after installing dependencies to set up Husky git hooks.
+The husky hook uses `lint-staged` to only lint and format committed files.
