@@ -14,7 +14,7 @@ export function validate(
 ): Array<ValidationError> {
   const errors: Array<ValidationError> = [];
 
-  for (let key of Object.keys(object)) {
+  for (const key of Object.keys(object)) {
     const validator = validators[key];
     if (!validator) {
       errors.push({

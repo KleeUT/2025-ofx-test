@@ -1,5 +1,4 @@
 import { APIGatewayProxyEvent } from "aws-lambda";
-import * as payments from "../src/lib/payments";
 import { handler } from "../src/listPayments";
 
 const listPaymentsMock = jest.fn();

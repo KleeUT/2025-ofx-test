@@ -2,7 +2,7 @@ import { APIGatewayProxyResult } from "aws-lambda";
 
 export const buildResponse = (
   statusCode: number,
-  body: Object,
+  body: object,
 ): APIGatewayProxyResult => {
   return {
     statusCode,
@@ -14,7 +14,7 @@ export const buildResponse = (
   };
 };
 
-export const parseInput = (body: string): Object => {
+export const parseInput = (body: string): object => {
   try {
     return JSON.parse(body);
   } catch (err) {

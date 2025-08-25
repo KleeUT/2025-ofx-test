@@ -1,4 +1,3 @@
-import * as payments from "../src/lib/payments";
 import { handler } from "../src/createPayment";
 import { apiGatewayEventWithBody } from "./apiGatewayEventUtils";
 import { availableCurrencies } from "../src/currencies";

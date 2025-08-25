@@ -1,4 +1,3 @@
-import * as payments from "../src/lib/payments";
 import { randomUUID } from "crypto";
 import { handler } from "../src/getPayment";
 import { APIGatewayProxyEvent } from "aws-lambda";
@@ -52,11 +51,6 @@ describe("When the user requests the records for a specific payment", () => {
   });
   it("Returns 404 if the payment is not found", async () => {
     const paymentId = randomUUID();
-    const mockPayment = {
-      id: paymentId,
-      currency: "AUD",
-      amount: 2000,
-    };
     getPaymentMock.mockResolvedValueOnce(null);
 
     const result = await handler({
