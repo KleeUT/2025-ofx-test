@@ -19,7 +19,7 @@ describe("payments", () => {
           input: {
             ExpressionAttributeValues: { ":currency": "ABC" },
             FilterExpression: "currency = :currency",
-            TableName: "Payments",
+            TableName: "PaymentsTable",
           },
         }),
       );
@@ -38,7 +38,7 @@ describe("payments", () => {
       expect(sendFn).toHaveBeenCalledWith(
         expect.objectContaining({
           input: {
-            TableName: "Payments",
+            TableName: "PaymentsTable",
           },
         }),
       );

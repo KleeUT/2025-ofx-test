@@ -5,11 +5,13 @@ import {
   ScanCommand,
 } from "@aws-sdk/lib-dynamodb";
 
+const TableName = "PaymentsTable";
+
 export function constructPayments(client: DynamoDBDocumentClient) {
   const getPayment = async (paymentId: string): Promise<Payment | null> => {
     const result = await client.send(
       new GetCommand({
-        TableName: "Payments",
+        TableName,
         Key: { paymentId },
       }),
     );
@@ -22,14 +24,14 @@ export function constructPayments(client: DynamoDBDocumentClient) {
   ): Promise<Payment[]> => {
     const command = currency
       ? new ScanCommand({
-          TableName: "Payments",
+          TableName,
           FilterExpression: "currency = :currency",
           ExpressionAttributeValues: {
             ":currency": currency,
           },
         })
       : new ScanCommand({
-          TableName: "Payments",
+          TableName,
         });
     const result = await client.send(command);
 
@@ -39,7 +41,7 @@ export function constructPayments(client: DynamoDBDocumentClient) {
   const createPayment = async (payment: Payment) => {
     await client.send(
       new PutCommand({
-        TableName: "Payments",
+        TableName,
         Item: payment,
       }),
     );
@@ -52,7 +54,7 @@ export function constructPayments(client: DynamoDBDocumentClient) {
 }
 
 export type Payment = {
-  id: string;
+  paymentId: string;
   amount: number;
   currency: string;
 };

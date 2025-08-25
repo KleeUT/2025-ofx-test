@@ -27,7 +27,7 @@ describe("createPayment", () => {
       }),
     );
     expect(createPaymentMock).toHaveBeenCalledWith({
-      id: "0000-0000-0000-0000-0000",
+      paymentId: "0000-0000-0000-0000-0000",
       amount: 100,
       currency: "USD",
     });

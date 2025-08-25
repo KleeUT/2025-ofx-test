@@ -36,7 +36,7 @@ export const handler = async (
   ) as UserSuppliedPayment;
   const payment: Payment = {
     ...userSuppliedPayment,
-    id: crypto.randomUUID(),
+    paymentId: crypto.randomUUID(),
   };
 
   const errors = validate(userSuppliedPayment, validators);
@@ -49,5 +49,5 @@ export const handler = async (
   const payments = constructPayments(DocumentClient);
   await payments.createPayment(payment);
 
-  return buildResponse(201, { result: payment.id });
+  return buildResponse(201, { result: payment.paymentId });
 };
